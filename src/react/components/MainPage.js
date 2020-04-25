@@ -9,6 +9,7 @@ import { updateConv, hdrToneMappingConv, setExposureConv } from '../../three/com
 import {hdrToneMappingProc} from '../../three/components/process'
 import GridRenders from './GridRender';
 import SaveDialog from './SaveDialog';
+
 function TabContainer(props) {
   const { children, dir } = props;
 
@@ -36,9 +37,7 @@ const styles = theme => ({
   },
 });
 
-
 class MainPage extends React.Component {
-
   state = {
     showCanvas: true,
     openSaveDialog: false,
@@ -50,9 +49,11 @@ class MainPage extends React.Component {
   onSaveOpen = () => {
     this.setState(() => ({ openSaveDialog: true }))
   }
+
   onSaveClose = () => {
     this.setState(() => ({ openSaveDialog: false }))
   }
+
   onExposureChange = (e, val) => {
 
     this.setState(() => ({ exposure: val }));
@@ -60,13 +61,13 @@ class MainPage extends React.Component {
     setExposure();
     setExposureConv();
   }
+
   onFileUpload = (e) => {
     const file = e.target.files[0];
     const format = file.name.split('.').slice(-1)[0]
     const formats = ['png', 'jpg', 'hdr']
 
     if (formats.includes(format)) {
-      // console.log(`File Accepted (${file.name.split('.').slice(-1)[0]})`)
       this.setState(() => ({ showCanvas: true }))
       imageProps.file = file;
       imageProps.loaded = true;
@@ -84,28 +85,27 @@ class MainPage extends React.Component {
         this.setState(() => ({ exposure: renderProps.exposure / renderProps.maxExposure * 100 }))
       });
     } else {
-      // console.log(`Wrong File (${file.name.split('.').slice(-1)[0]})`)
       alert(`You used Wrong File (${file.name.split('.').slice(-1)[0]}) \n I accept only (.jpg,.png,.hdr) for now.`)
       this.setState(() => ({ showCanvas: false }))
       imageProps.file = null;
       imageProps.loaded = false;
       imageProps.format = ''
     }
-
-
   }
+
   onTabChange = (e, tabVal) => {
     this.setState(() => ({ tabVal }), () => {
-      console.log('Update')
       if (!this.state.cubeUpdated) {
         updateConv();
         this.setState(() => ({ cubeUpdated: true }))
       }
     });
   }
+
   handleChangeIndex = index => {
     this.setState(() => ({ tabVal: index }));
   };
+
   render() {
     return (
       <div>
@@ -125,8 +125,6 @@ class MainPage extends React.Component {
           <Paper
             id={'canv-container'}
             style={{ width: '64vw', height: '36vw', marginLeft: 'auto', marginRight: 'auto' }}
-            // hidden={!this.state.showCanvas}
-
             elevation={3}
           >
             <SwipeableViews
@@ -144,13 +142,11 @@ class MainPage extends React.Component {
                 <GridRenders />
               </TabContainer>
             </SwipeableViews>
-
             <div>
               <div style={{ textAlign: 'center', fontSize: 13, fontWeight: 550 }}>
                 Exposure = {(this.state.exposure * (renderProps.maxExposure / 100)).toFixed(2)}
               </div>
               <Slider value={this.state.exposure} onChange={this.onExposureChange} />
-
             </div>
           </Paper>
           <input
@@ -172,7 +168,6 @@ class MainPage extends React.Component {
             </div>
           </Paper>
         </Paper>
-
       </div>
     )
   }

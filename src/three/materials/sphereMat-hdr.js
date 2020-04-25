@@ -7,9 +7,8 @@ export const sphereMatHdr = new ShaderMaterial({
   vertexShader,
   fragmentShader,
   uniforms: {
-    tDiffuse: { value: HdrTexture }
+    tDiffuse: { value: HdrTexture },
   },
   transparent: true,
-  side: DoubleSide
+  side: DoubleSide,
 });
-

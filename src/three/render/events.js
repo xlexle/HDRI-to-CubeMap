@@ -1,40 +1,37 @@
-import {resize} from '../components/base';
-import {resizeConv} from '../components/convert';
+import { resize } from '../components/base';
+import { resizeConv } from '../components/convert';
 import cameraControl from '../controls/cameraControl';
-import {convProps}from '../components/props';
-const customEvents =()=>{
-  // console.log('event',document.getElementById('MainCanvas'))
+import { convProps } from '../components/props';
 
-  window.addEventListener("resize",(event)=>{
+const customEvents = () => {
+  window.addEventListener('resize', (event) => {
     resize();
     resizeConv();
-  })
+  });
 
   const canvas = document.getElementById('MainCanvas');
-  canvas.addEventListener('mouseover',()=>{
+  canvas.addEventListener('mouseover', () => {
     cameraControl.enabled = true;
-  })
-  canvas.addEventListener('mouseout',()=>{
+  });
+  canvas.addEventListener('mouseout', () => {
     cameraControl.enabled = false;
-    
-  })
-}
+  });
+};
 
-const customEventsCanv = () =>{
-  const inside = [false,false,false,false,false,false]
-  inside.map((n,i)=>{
-    
-    convProps.refs[i].addEventListener('mouseover',()=>{
+const customEventsCanv = () => {
+  const inside = [false, false, false, false, false, false];
+  inside.map((n, i) => {
+    convProps.refs[i].addEventListener('mouseover', () => {
       inside[i] = true;
       cameraControl.enabled = true;
-    })
-    convProps.refs[i].addEventListener('mouseout',()=>{
+    });
+    convProps.refs[i].addEventListener('mouseout', () => {
       inside[i] = false;
-      if(inside.every(bool => !bool)){
+      if (inside.every((bool) => !bool)) {
         cameraControl.enabled = false;
       }
-    })
-  })
-}
+    });
+  });
+};
 
-export {customEvents,customEventsCanv};
+export { customEvents, customEventsCanv };

@@ -1,16 +1,13 @@
 import React from 'react';
-import {
-  Dialog, DialogActions, DialogContent, DialogTitle, Button, withStyles, Paper,
-  LinearProgress, Select, MenuItem, InputLabel, FormControl
-} from '@material-ui/core';
-import ClassNames from 'classnames';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, withStyles, LinearProgress } from '@material-ui/core';
 import { procRenderSep, procRenderUnity, procRenderUE4 } from '../../three/render/renderProc';
 import { hdrProcRenderSep, hdrProcRenderUnity, hdrProcRenderUE4 } from '../../three/render/hdrRenderProc';
 import CrossLayout from './saveDialogComp/CrossLayout';
 import LineLayout from './saveDialogComp/LineLayout';
-import SeperateLayout from './saveDialogComp/SeperateLayout';
+import SeparateLayout from './saveDialogComp/SeparateLayout';
 import ResolutionSelect from './saveDialogComp/ResolutionSelect';
 import FormatSelect from './saveDialogComp/FormatSelect';
+
 const styles = theme => ({
   optionUnity: {
     width: 496,
@@ -45,8 +42,6 @@ const styles = theme => ({
   },
 })
 
-
-
 class SaveDialog extends React.Component {
   state = {
     selected: 0,
@@ -60,16 +55,13 @@ class SaveDialog extends React.Component {
     format: 'png',
   }
 
-
-  proccessFiles = () => event => {
-    console.log('saving files - index =', this.state.selected);
-    console.log(event.handler)
+  processFiles = () => event => {
     // console.dir(document.getElementById('SaveButton'))
     // const myButton = document.getElementById('SaveButton')
     this.setState(() => ({ saveDisable: true }))
 
     if (this.state.format === 'hdr') {
-      this.hdrProccess(href => {
+      this.hdrProcess(href => {
         this.setState(() => ({
           url: href,
           download: 'Standard-Cube-Map.zip',
@@ -78,7 +70,7 @@ class SaveDialog extends React.Component {
         }))
       });
     } else {
-      this.regularProccess(href => {
+      this.regularProcess(href => {
         this.setState(() => ({
           url: href,
           download: 'Standard-Cube-Map.zip',
@@ -87,9 +79,9 @@ class SaveDialog extends React.Component {
         }))
       });
     }
-
   }
-  hdrProccess = (callback) => {
+
+  hdrProcess = (callback) => {
     if (this.state.selected === 1) {
       hdrProcRenderUnity(this.state.resolution, href => {
         callback(href);
@@ -115,7 +107,8 @@ class SaveDialog extends React.Component {
       })
     }
   }
-  regularProccess = (callback) => {
+
+  regularProcess = (callback) => {
     if (this.state.selected === 1) {
       procRenderUnity(this.state.resolution, href => {
         callback(href);
@@ -141,18 +134,19 @@ class SaveDialog extends React.Component {
       })
     }
   }
+
   saveFiles = () => {
-    // const myButton = document.getElementById('SaveButton')
-    // console.dir(myButton)
     this.onClose();
   }
+
   handleSelect = (index = 0) => event => {
-    console.log('works', index)
     this.setState(() => ({ selected: index }))
   }
+
   onSelectChange = name => event => {
     this.setState({ [name]: event.target.value });
   }
+
   onClose = () => {
     this.props.onClose();
     this.setState(() => ({
@@ -163,6 +157,7 @@ class SaveDialog extends React.Component {
       progress: 0
     }))
   }
+
   render() {
     const { classes } = this.props;
     const { selected } = this.state;
@@ -189,12 +184,10 @@ class SaveDialog extends React.Component {
           </div>
           <CrossLayout classes={classes} selected={selected} onClick={this.handleSelect(1)} />
           <LineLayout classes={classes} selected={selected} onClick={this.handleSelect(2)} />
-          <SeperateLayout classes={classes} selected={selected} onClick={this.handleSelect(3)} />
+          <SeparateLayout classes={classes} selected={selected} onClick={this.handleSelect(3)} />
         </DialogContent>
         <LinearProgress variant="determinate" value={this.state.progress} />
-
         <DialogActions>
-
           {this.state.processed ?
             <Button
               id={'SaveButton'}
@@ -211,7 +204,7 @@ class SaveDialog extends React.Component {
             <Button
               variant='contained'
               disabled={selected === 0}
-              onClick={this.proccessFiles()}
+              onClick={this.processFiles()}
               disabled={this.state.saveDisable}
             >
               Process

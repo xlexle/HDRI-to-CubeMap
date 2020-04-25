@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/prefer-default-export
 export const hadrEmmisiveWorker = () => {
   // You can't push Uint8Array, so i made a class to do that
   class ByteData {
@@ -6,29 +7,31 @@ export const hadrEmmisiveWorker = () => {
       this._cIndex = 0;
       this.push = this.push.bind(this);
     }
+
     push(...bytes) {
-      for (var i = 0; i < arguments.length; i++) {
+      for (let i = 0; i < arguments.length; i++) {
         this.binaryData[this._cIndex] = arguments[i];
         this._cIndex++;
       }
     }
   }
-  self.addEventListener('message', event => {
-    const width = event.data.width;
-    const height = event.data.height;
-    const rgbeBuffer = event.data.rgbeBuffer;
-    const fromBottom = event.data.fromBottom;
+  self.addEventListener('message', (event) => {
+    const { width } = event.data;
+    const { height } = event.data;
+    const { rgbeBuffer } = event.data;
+    const { fromBottom } = event.data;
     // pixel data starts at lower left corner, but we are writing hdr from upper left one,
-    // this function gives me upper left pixel row based on y, where y = 0 -> top row 
-    const topIndex = y => fromBottom ?
-      (width * height * 4) - (width * 4) - (width * y * 4)
-      : width * y * 4;
+    // this function gives me upper left pixel row based on y, where y = 0 -> top row
+    const topIndex = (y) => (fromBottom
+      ? (width * height * 4) - (width * 4) - (width * y * 4)
+      : width * y * 4);
     // calculates repetitions in line for given channel
     const getLine = (y = 0, channel = 0) => {
       const array = [];
-      let localVal = 0, localLength = 0;
+      let localVal = 0; let
+        localLength = 0;
       const lengthConstant = 128;
-      for (var i = 0; i < width * 4; i += 4) {
+      for (let i = 0; i < width * 4; i += 4) {
         if (localLength === 0) {
           localVal = rgbeBuffer[topIndex(y) + i + channel];
           localLength++;
@@ -42,7 +45,7 @@ export const hadrEmmisiveWorker = () => {
       }
       array.push({ value: localVal, length: localLength + lengthConstant });
       return array;
-    }
+    };
 
     const compressed = [];
     let fileSize = 0;
@@ -56,17 +59,16 @@ export const hadrEmmisiveWorker = () => {
       fileSize += lineInitiator + lineReds.length * 2 + lineGreens.length * 2 + lineBlues.length * 2 + lineEmissive.length * 2;
       compressed.push([lineReds, lineGreens, lineBlues, lineEmissive]);
     }
-    console.log(`Worker, hdr file size = ${(fileSize / 1024).toFixed(2)}kb`);
     const lineSize = new Uint8Array(new Uint16Array([width]).buffer);
     const byteData = new ByteData(fileSize);
 
     for (var i = 0; i < height; i++) {
       // Each line starts the same
-      byteData.push(2, 2, lineSize[1], lineSize[0]);//line iniciators // no idea why but linesize is flipped
-      for (var k = 0; k < 4; k++) {
-        compressed[i][k].map(channel => { byteData.push(channel.length, channel.value); })
+      byteData.push(2, 2, lineSize[1], lineSize[0]);// line iniciators // no idea why but linesize is flipped
+      for (let k = 0; k < 4; k++) {
+        compressed[i][k].map((channel) => { byteData.push(channel.length, channel.value); });
       }
     }
     self.postMessage({ binary: byteData.binaryData });
   });
-}
+};

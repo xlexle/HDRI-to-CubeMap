@@ -1,10 +1,12 @@
 import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import {
+  FormControl, InputLabel, Select, MenuItem,
+} from '@material-ui/core';
 
 const options = ['png', 'hdr'];
 
-const FormatSelect = props => {
-  const { classes, onChange, value } = props
+const FormatSelect = (props) => {
+  const { classes, onChange, value } = props;
   return (
     <FormControl className={classes.formControl}>
       <InputLabel htmlFor="resolution-label">Format</InputLabel>
@@ -16,10 +18,10 @@ const FormatSelect = props => {
           id: 'resolution-label',
         }}
       >
-        {options.map(option => (<MenuItem key={option} value={option}>{option}</MenuItem>))}
+        {options.map((option) => (<MenuItem key={option} value={option}>{option}</MenuItem>))}
       </Select>
     </FormControl>
-  )
-}
+  );
+};
 
-export default FormatSelect
+export default FormatSelect;

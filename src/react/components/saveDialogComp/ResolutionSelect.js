@@ -1,10 +1,12 @@
 import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import {
+  FormControl, InputLabel, Select, MenuItem,
+} from '@material-ui/core';
 
 const options = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192];
 
-const ResolutionSelect = props => {
-  const { classes, onChange, value } = props
+const ResolutionSelect = (props) => {
+  const { classes, onChange, value } = props;
   return (
     <FormControl className={classes.formControl}>
       <InputLabel htmlFor="resolution-label">Piece resolution</InputLabel>
@@ -16,10 +18,10 @@ const ResolutionSelect = props => {
           id: 'resolution-label',
         }}
       >
-        {options.map(option => (<MenuItem key={option} value={option}>{option}</MenuItem>))}
+        {options.map((option) => (<MenuItem key={option} value={option}>{option}</MenuItem>))}
       </Select>
     </FormControl>
-  )
-}
+  );
+};
 
-export default ResolutionSelect
+export default ResolutionSelect;

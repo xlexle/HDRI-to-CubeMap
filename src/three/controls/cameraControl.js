@@ -7,7 +7,7 @@ cameraControl.enablePan = false;
 cameraControl.enableDamping = true;
 cameraControl.dampingFactor = 0.1;
 cameraControl.rotateSpeed = 0.035;
-cameraControl.enabled=false;
+cameraControl.enabled = false;
 cameraControl.update();
 
 export default cameraControl;

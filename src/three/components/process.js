@@ -1,17 +1,18 @@
 import {
   WebGLRenderer, PerspectiveCamera, ReinhardToneMapping, LinearToneMapping,
-  SphereGeometry, Mesh, Scene, WebGLRenderTarget
-} from 'three'
-import { sphereMatHdr } from '../materials/sphereMat-hdr'
-// canvas is in .domElement
+  SphereGeometry, Mesh, Scene, WebGLRenderTarget,
+} from 'three';
+
+import { sphereMatHdr } from '../materials/sphereMat-hdr';
+
 const procRenderer = new WebGLRenderer();
 const hdrProcRenderer = new WebGLRenderer({ alpha: true });
 const hdrRenderTarget = new WebGLRenderTarget();
 const procCamera = new PerspectiveCamera(90, 1, 1, 5000);
-
 const hdrScene = new Scene();
 const hdrGeo = new SphereGeometry(2000, 100, 100);
 const hdrSphereMesh = new Mesh(hdrGeo, sphereMatHdr);
+
 hdrSphereMesh.scale.set(-1, -1, -1);
 hdrSphereMesh.rotateZ(Math.PI);
 hdrSphereMesh.rotateY(-Math.PI / 2);
@@ -26,8 +27,10 @@ const hdrToneMappingProc = (hdr = true) => {
     procRenderer.toneMapping = LinearToneMapping;
     procRenderer.toneMappingExposure = 1;
   }
-}
+};
 
 hdrToneMappingProc(true);
 
-export { procRenderer, hdrProcRenderer, hdrRenderTarget, hdrScene, procCamera, hdrToneMappingProc };
+export {
+  procRenderer, hdrProcRenderer, hdrRenderTarget, hdrScene, procCamera, hdrToneMappingProc,
+};

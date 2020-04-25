@@ -1,9 +1,12 @@
-import { Texture, ImageLoader, RGBEEncoding, NearestFilter } from 'three';
+import {
+  Texture, ImageLoader, RGBEEncoding, NearestFilter,
+} from 'three';
 import { RGBELoader } from '../examples/RGBELoader';
-import { imageProps } from '../components/props'
+import { imageProps } from '../components/props';
 import { updateSphereMap } from '../materials/sphereMat';
 import { HdrTexture } from './iniHdrTexture';
-import { hdrToneMappingProc } from '../components/process'
+import { hdrToneMappingProc } from '../components/process';
+
 const userTexture = new Texture();
 
 userTexture.minFilter = NearestFilter;
@@ -18,7 +21,7 @@ const updateImage = (callback = () => { }) => {
       const dataURL = theFile.target.result;
       loader.load(
         dataURL,
-        tex => {
+        (tex) => {
           tex.encoding = RGBEEncoding;
           tex.minFilter = NearestFilter;
           tex.magFilter = NearestFilter;
@@ -31,11 +34,11 @@ const updateImage = (callback = () => { }) => {
           callback();
         },
         undefined,
-        err => {
+        (err) => {
           console.error('failed to load HDR texture', err);
-        }
-      )
-    }
+        },
+      );
+    };
   } else {
     const loader = new ImageLoader();
     reader.onload = (theFile) => {
@@ -53,12 +56,10 @@ const updateImage = (callback = () => { }) => {
         undefined,
         (err) => {
           console.error('error - loading image', err);
-        }
+        },
       );
     };
   }
+};
 
-
-}
-
-export { updateImage }
+export { updateImage };
